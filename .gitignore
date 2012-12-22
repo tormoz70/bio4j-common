@@ -1,0 +1,16 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# eclipse files
+.classpath
+.project
+
+# paths
+.metadata/
+.settings/
+target/
+test-output/
