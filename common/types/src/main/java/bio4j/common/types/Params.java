@@ -3,16 +3,15 @@ package bio4j.common.types;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
+import bio4j.common.utils.JsonUtl;
 import bio4j.common.utils.StringUtl;
 
 public class Params extends ArrayList<Param> {
 	private static final long serialVersionUID = 5012738097491734039L;
+	private static final String csDefaultDelimiter = "/";
 
 	public Param getParam(final String name, final Boolean ignoreCase, final Boolean createIfNotFound) {
 		Param result = this.process(new DelegateCheck<Param>() {
@@ -21,6 +20,7 @@ public class Params extends ArrayList<Param> {
 				return StringUtl.compareStrings(param.getName(), name, ignoreCase);
 			}
 		}).first();
+		
 		if ((result == null) && (createIfNotFound)) {
 			result = new Param(this);
 			this.add(result);
@@ -81,41 +81,43 @@ public class Params extends ArrayList<Param> {
 		return this.removeParam(rslt);
 	}
 
-	private synchronized void checkExists(String name, Boolean replaceIfExists) throws ParamAlredyExistsException {
+	private Boolean alredyExists(String name, Boolean replaceIfExists) {
+		Boolean result = false;
 		Param exists = this.getParam(name);
 		if (exists != null) {
 			if (replaceIfExists) {
 				exists.removeFromOwner();
 				exists = null;
 			} else
-				throw new ParamAlredyExistsException(name);
-
+				result = true;
 		}
+		return result;
 	}
 
-	public synchronized Param add(Param item, Boolean replaceIfExists) throws ParamAlredyExistsException {
+	public synchronized Param add(Param item, Boolean replaceIfExists) {
 		if (item != null) {
-			this.checkExists(item.getName(), replaceIfExists);
-			super.add(item);
+			if (!this.alredyExists(item.getName(), replaceIfExists))
+				super.add(item);
 		}
 		return item;
 	}
 
-	public synchronized Param add(String name, Object value, Boolean replaceIfExists) throws ParamAlredyExistsException {
+	public synchronized Param add(String name, Object value, Boolean replaceIfExists) {
 		if (!StringUtl.isNullOrEmpty(name)) {
-			this.checkExists(name, replaceIfExists);
-			Param rslt = new Param(this, name, value);
-			super.add(rslt);
-			return rslt;
+			if (!this.alredyExists(name, replaceIfExists)) {
+				Param rslt = new Param(this, name, value);
+				super.add(rslt);
+				return rslt;
+			}
 		}
 		return null;
 	}
 
-	public synchronized Param add(String name, Object value) throws ParamAlredyExistsException {
+	public synchronized Param add(String name, Object value) {
 		return this.add(name, value, false);
 	}
 
-	public synchronized Param add(String name, Object value, Object innerObject) throws ParamAlredyExistsException {
+	public synchronized Param add(String name, Object value, Object innerObject) {
 		Param rslt = this.add(name, value, false);
 		rslt.setInnerObject(innerObject);
 		return rslt;
@@ -124,10 +126,7 @@ public class Params extends ArrayList<Param> {
 	public synchronized Params merge(Params params, Boolean overwrite) {
 		if ((params != null) && (params != this)) {
 			for (Param pp : params)
-				try {
-					this.add(pp.export(this), overwrite);
-				} catch (ParamAlredyExistsException e) {
-				}
+				this.add(pp.export(this), overwrite);
 		}
 		return this;
 	}
@@ -153,14 +152,6 @@ public class Params extends ArrayList<Param> {
 		return null;
 	}
 
-	public Boolean paramExists(String name) {
-		return this.getParam(name) != null;
-	}
-
-	public Boolean paramExists(String name, Boolean ignoreCase) {
-		return this.getParam(name, ignoreCase) != null;
-	}
-
 	public synchronized Param setValue(String name, Object value) {
 		Param param = this.getParam(name);
 		if (param != null)
@@ -175,9 +166,7 @@ public class Params extends ArrayList<Param> {
 			if ((prm.getValue() != null) && (prm.getValue().getClass() == String.class))
 				val = prm.getValueAsString();
 			else {
-				// TODO do serialize object with an json serializer
-				// val = Newtonsoft.Json.JsonConvert.SerializeObject(prm.Value);
-				val = prm.getValueAsString();
+				val = JsonUtl.encode(prm.getValue());
 			}
 			rslt.put(prm.getName(), val);
 		}
@@ -202,68 +191,69 @@ public class Params extends ArrayList<Param> {
 		if (!StringUtl.isNullOrEmpty(baseURL))
 			return (baseURL.indexOf("?") >= 0) ? baseURL + "&" + rslt : baseURL + "?" + rslt;
 		else
-			return rslt; 
+			return rslt;
 	}
 
 	public String encode() {
-		// TODO Add implementation
-		return null;
+		return JsonUtl.encode(this);
 	}
 
-    public static Params decode(String jsonString) {
-		// TODO Add implementation
-		return null;
-    }
-
-	public Boolean containsParam(String name, Object value) {
-		// TODO Add implementation
-		return false;
+	public static Params decode(String jsonString) {
+		return JsonUtl.decode(Params.class, jsonString);
 	}
 
-	public Boolean containsParam(Param param) {
-		// TODO Add implementation
-		return false;
+	public Boolean paramExists(String name) {
+		return this.getParam(name) != null;
 	}
 
-	public Boolean containsParam(Params params) {
-		// TODO Add implementation
-		return false;
+	public Boolean paramExists(String name, Boolean ignoreCase) {
+		return this.getParam(name, ignoreCase) != null;
 	}
 
-	public synchronized void addList(String names, Object[] values, char delimiter) {
-		// TODO Add implementation
+	public synchronized Params addList(String names, Object[] values, String delimiter) {
+		String[] paramNames = StringUtl.split(names, delimiter);
+		for (int i = 0; i < paramNames.length; i++)
+			this.add(paramNames[i], (i < values.length) ? values[i] : null);
+		return this;
 	}
 
-	public synchronized void addList(String names, Object[] values) {
-		// TODO Add implementation
+	public synchronized Params addList(String names, Object[] values) {
+		return this.addList(names, values, csDefaultDelimiter);
 	}
 
-	public synchronized void addList(String names, String values, char delimiter) {
-		// TODO Add implementation
+	public synchronized Params addList(String names, String values, String delimiter) {
+		return this.addList(names, StringUtl.split(values, delimiter), delimiter);
 	}
 
-	public synchronized void addList(String names, String values) {
-		// TODO Add implementation
+	public synchronized Params addList(String names, String values) {
+		return addList(names, values, csDefaultDelimiter);
 	}
 
-	public synchronized void setList(String names, Object[] values, char delimiter) {
-		// TODO Add implementation
+	public synchronized Params setList(String names, Object[] values, String delimiter) {
+		String[] strs = StringUtl.split(names, delimiter);
+		for (int i = 0; i < strs.length; i++)
+			if (i < values.length)
+				this.setValue(strs[i], values[i]);
+		return this;
 	}
 
-	public synchronized void setList(String names, String values, char delimiter) {
-		// TODO Add implementation
+	public synchronized Params setList(String names, String values, String delimiter) {
+		return setList(names, StringUtl.split(values, delimiter), delimiter);
 	}
 
-	public synchronized void setList(String names, String values) {
-		// TODO Add implementation
+	public synchronized Params setList(String names, String values) {
+		return setList(names, values, csDefaultDelimiter);
 	}
 
-	public synchronized void removeList(String names, char delimiter) {
-		// TODO Add implementation
+	public synchronized Params removeList(String names, String delimiter) {
+		String[] strs = StringUtl.split(names, delimiter);
+		for (int i = 0; i < strs.length; i++)
+			this.removeParam(strs[i]);
+		return this;
 	}
 
-	public synchronized void removeList(String names) {
-		// TODO Add implementation
+	public synchronized Params removeList(String names) {
+		return removeList(names, csDefaultDelimiter);
 	}
 
 }

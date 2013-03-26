@@ -13,4 +13,11 @@ public class DateUtl {
         	return null;
         }
 	}
+	
+	public static Date minValue(){
+		return new Date(Long.MIN_VALUE);
+	}
+	public static Date maxValue(){
+		return new Date(Long.MAX_VALUE);
+	}
 }

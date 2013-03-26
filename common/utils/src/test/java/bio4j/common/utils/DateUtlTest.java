@@ -1,14 +1,11 @@
 package bio4j.common.utils;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 import junit.framework.Assert;
 
 import org.testng.annotations.Test;
-
-import bio4j.common.utils.DateUtl;
 
 public class DateUtlTest {
 

@@ -8,7 +8,6 @@ import flexjson.JSONSerializer;
 import flexjson.ObjectBinder;
 import flexjson.ObjectFactory;
 import flexjson.transformer.DateTransformer;
-import flexjson.transformer.Transformer;
 
 public class JsonUtl {
 	private static String csDateTimeFormat = "yyyy.MM.dd-HH:mm:ss";
@@ -24,7 +23,16 @@ public class JsonUtl {
 	public static Object decode(String json) {
 		JSONDeserializer<Object> deserializer = new JSONDeserializer<Object>().use(Date.class, new ObjectFactory() {
 			@Override
-			public Object instantiate(ObjectBinder context, Object value, Type targetType, Class targetClass) {
+			public Object instantiate(ObjectBinder context, Object value, Type targetType, @SuppressWarnings("rawtypes") Class targetClass) {
+				return DateUtl.parse((String)value, csDateTimeFormat);
+			}
+		});
+		return deserializer.deserialize(json);
+	}
+	public static <T> T decode(Class<T> clazz, String json) {
+		JSONDeserializer<T> deserializer = new JSONDeserializer<T>().use(Date.class, new ObjectFactory() {
+			@Override
+			public Object instantiate(ObjectBinder context, Object value, Type targetType, @SuppressWarnings("rawtypes") Class targetClass) {
 				return DateUtl.parse((String)value, csDateTimeFormat);
 			}
 		});

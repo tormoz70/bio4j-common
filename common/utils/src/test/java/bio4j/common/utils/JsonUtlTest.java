@@ -1,17 +1,9 @@
 package bio4j.common.utils;
 
-import java.text.DateFormat;
-import java.util.Date;
-
 import junit.framework.Assert;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
-import bio4j.common.utils.DateUtl;
-import bio4j.common.utils.JsonUtl;
-
-import flexjson.JSONSerializer;
 
 public class JsonUtlTest {
 
@@ -33,16 +25,13 @@ public class JsonUtlTest {
 		this.testBox.setEx(new Exception("FTW TestException"));
 	}
 
-	@Test(enabled = true)
+	@Test(enabled = false)
 	public void a_encode() {
 		String expected =
-		 "{\"class\":\"bio.common.utils.TBox\",\"created\":\"2012.12.20-15:11:24\",\"name\":\"Test-Box\",\"packets\":[{\"apples\":[{\"class\":\"bio.common.utils.TApple\",\"name\":\"apple-0-0\",\"wheight\":10.1},{\"class\":\"bio.common.utils.TApple\",\"name\":\"apple-0-1\",\"wheight\":10.2}],\"class\":\"bio.common.utils.TPacket\",\"name\":\"packet-0\",\"volume\":100.1}],\"volume\":123.05}";
+		 "{\"class\":\"bio4j.common.utils.TBox\",\"created\":\"2012.12.20-15:11:24\",\"ex\":{\"class\":\"java.lang.Exception\",\"message\":\"FTW TestException\",\"stackTrace\":[{\"class\":\"java.lang.StackTraceElement\",\"className\":\"bio4j.common.utils.JsonUtlTest\",\"fileName\":\"JsonUtlTest.java\",\"lineNumber\":25,\"methodName\":\"setUp\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"sun.reflect.NativeMethodAccessorImpl\",\"fileName\":\"NativeMethodAccessorImpl.java\",\"lineNumber\":-2,\"methodName\":\"invoke0\",\"nativeMethod\":true},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"sun.reflect.NativeMethodAccessorImpl\",\"fileName\":\"NativeMethodAccessorImpl.java\",\"lineNumber\":57,\"methodName\":\"invoke\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"sun.reflect.DelegatingMethodAccessorImpl\",\"fileName\":\"DelegatingMethodAccessorImpl.java\",\"lineNumber\":43,\"methodName\":\"invoke\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"java.lang.reflect.Method\",\"fileName\":\"Method.java\",\"lineNumber\":601,\"methodName\":\"invoke\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.MethodInvocationHelper\",\"fileName\":\"MethodInvocationHelper.java\",\"lineNumber\":80,\"methodName\":\"invokeMethod\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.Invoker\",\"fileName\":\"Invoker.java\",\"lineNumber\":564,\"methodName\":\"invokeConfigurationMethod\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.Invoker\",\"fileName\":\"Invoker.java\",\"lineNumber\":213,\"methodName\":\"invokeConfigurations\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.Invoker\",\"fileName\":\"Invoker.java\",\"lineNumber\":138,\"methodName\":\"invokeConfigurations\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.TestMethodWorker\",\"fileName\":\"TestMethodWorker.java\",\"lineNumber\":175,\"methodName\":\"invokeBeforeClassMethods\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.internal.TestMethodWorker\",\"fileName\":\"TestMethodWorker.java\",\"lineNumber\":107,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.TestRunner\",\"fileName\":\"TestRunner.java\",\"lineNumber\":767,\"methodName\":\"privateRun\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.TestRunner\",\"fileName\":\"TestRunner.java\",\"lineNumber\":617,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunner\",\"fileName\":\"SuiteRunner.java\",\"lineNumber\":334,\"methodName\":\"runTest\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunner\",\"fileName\":\"SuiteRunner.java\",\"lineNumber\":329,\"methodName\":\"runSequentially\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunner\",\"fileName\":\"SuiteRunner.java\",\"lineNumber\":291,\"methodName\":\"privateRun\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunner\",\"fileName\":\"SuiteRunner.java\",\"lineNumber\":240,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunnerWorker\",\"fileName\":\"SuiteRunnerWorker.java\",\"lineNumber\":52,\"methodName\":\"runSuite\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.SuiteRunnerWorker\",\"fileName\":\"SuiteRunnerWorker.java\",\"lineNumber\":86,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.TestNG\",\"fileName\":\"TestNG.java\",\"lineNumber\":1203,\"methodName\":\"runSuitesSequentially\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.TestNG\",\"fileName\":\"TestNG.java\",\"lineNumber\":1128,\"methodName\":\"runSuitesLocally\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.TestNG\",\"fileName\":\"TestNG.java\",\"lineNumber\":1036,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.remote.RemoteTestNG\",\"fileName\":\"RemoteTestNG.java\",\"lineNumber\":111,\"methodName\":\"run\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.remote.RemoteTestNG\",\"fileName\":\"RemoteTestNG.java\",\"lineNumber\":204,\"methodName\":\"initAndRun\",\"nativeMethod\":false},{\"class\":\"java.lang.StackTraceElement\",\"className\":\"org.testng.remote.RemoteTestNG\",\"fileName\":\"RemoteTestNG.java\",\"lineNumber\":175,\"methodName\":\"main\",\"nativeMethod\":false}]},\"name\":\"Test-Box\",\"packets\":[{\"apples\":[{\"class\":\"bio4j.common.utils.TApple\",\"name\":\"apple-0-0\",\"wheight\":10.1},{\"class\":\"bio4j.common.utils.TApple\",\"name\":\"apple-0-1\",\"wheight\":10.2}],\"class\":\"bio4j.common.utils.TPacket\",\"name\":\"packet-0\",\"volume\":100.1}],\"volume\":123.05}";
 		String testJson = JsonUtl.encode(this.testBox);
 		System.out.println(testJson);
-		//Assert.assertEquals(expected, testJson);
-//		Exception ex = new Exception("FTW");
-//		String valueStr = new JSONSerializer().exclude("cause", "localizedMessage", "stackTraceDepth").include("stackTrace").serialize(ex);
-//		System.out.println(valueStr);
+		Assert.assertEquals(expected, testJson);
 	}
 
 	@Test(enabled = false)
