@@ -1,7 +1,12 @@
 package bio4j.common.utils;
 
+import javax.xml.bind.helpers.ParseConversionEventImpl;
+
 import org.junit.Assert;
+import org.omg.CORBA.ExceptionList;
 import org.testng.annotations.Test;
+
+import bsh.ParseException;
 
 public class ConverterTest {
 
@@ -37,10 +42,30 @@ public class ConverterTest {
 		}
 	}
 
+//    public static <T> T number2Number(Number inValue, Class<T> targetType) throws ParseException {
+//    	try {
+//    		T rslt = (T)inValue; // Как мне сделать, что бы тут возбуждалось исключение?
+//    		return rslt; 
+//    	} catch (Exception ex) {
+//    		new ParseException(String.format("", inValue, targetType));
+//    	}
+//    	return null;
+//    }
+//	@Test
+//	public void ConvertDouble2Integer() {
+//		try {
+//			Integer rslt = number2Number(new Double(123.2), Integer.class);
+//		} catch (ParseException ex) {
+//			Assert.assertTrue(true);
+//		} catch (Exception ex) {
+//			Assert.fail(ex.getMessage());
+//		}
+//	}
+	
 	@Test
 	public void ConvertString2Integer() {
 		try {
-			Integer actual = Converter.toType("123", int.class);
+			Integer actual = Converter.toType("123,2", int.class);
 			Integer expected = 123;
 			Assert.assertEquals(expected, actual);
 		} catch (ConverterValueException ex) {
