@@ -7,6 +7,10 @@ import java.text.ParseException;
 
 import javax.print.DocFlavor.CHAR_ARRAY;
 
+/**
+ * @author ayrat
+ *	Конвертер типов
+ */
 public class Converter {
 
 	public static Boolean typeIsNumber(Class<?> inType) {
