@@ -1,12 +1,7 @@
 package bio4j.common.utils;
 
-import javax.xml.bind.helpers.ParseConversionEventImpl;
-
 import org.junit.Assert;
-import org.omg.CORBA.ExceptionList;
 import org.testng.annotations.Test;
-
-import bsh.ParseException;
 
 public class ConverterTest {
 

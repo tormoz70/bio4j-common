@@ -32,6 +32,13 @@
 				<artifactId>flexjson</artifactId>
 				<version>1.2.1</version>
 			</dependency>
+			
+			<dependency>
+			    <groupId>commons-beanutils</groupId>
+			    <artifactId>commons-beanutils-core</artifactId>
+			    <version>1.8.3</version>
+			</dependency>
+						
 			<dependency>
 				<groupId>${groupId}</groupId>
 				<artifactId>common.utils</artifactId>
@@ -55,6 +62,7 @@
 		<module>utils</module>
 		<module>database-api</module>
 		<module>direct-oracle-access</module>
+        <module>packets</module>
 	</modules>
 	<dependencies>
 		<dependency>

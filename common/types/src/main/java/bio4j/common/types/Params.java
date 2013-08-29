@@ -6,11 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import bio4j.common.utils.JsonUtl;
 import bio4j.common.utils.StringUtl;
 
 public class Params extends ArrayList<Param> {
-	private static final long serialVersionUID = 5012738097491734039L;
+
+    private static final long serialVersionUID = 1L;
 	private static final String csDefaultDelimiter = "/";
 
 	public Param getParam(final String name, final Boolean ignoreCase, final Boolean createIfNotFound) {
@@ -256,4 +259,15 @@ public class Params extends ArrayList<Param> {
 		return removeList(names, csDefaultDelimiter);
 	}
 
+	@Override
+    public Params clone() {
+		try {
+	    	return (Params) BeanUtils.cloneBean(this);
+		} catch (Exception ex){
+			Params result = new Params();
+			result.add("ErrorOnCloneParamsMessage", ex.getMessage());
+			return result;
+		}
+    }
+	
 }

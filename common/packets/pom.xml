@@ -8,15 +8,19 @@
 		<artifactId>common</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>common.types</artifactId>
+	<artifactId>transport.packets</artifactId>
 	<packaging>jar</packaging>
 	<build>
-		<finalName>${groupId}-common-types</finalName>
+		<finalName>${groupId}-transport-packets</finalName>
 	</build>
 	<dependencies>
 		<dependency>
 		    <groupId>commons-beanutils</groupId>
 		    <artifactId>commons-beanutils-core</artifactId>
+		</dependency>
+	    <dependency>
+			<groupId>${groupId}</groupId>
+			<artifactId>common.types</artifactId>
 		</dependency>
 	    <dependency>
 			<groupId>${groupId}</groupId>

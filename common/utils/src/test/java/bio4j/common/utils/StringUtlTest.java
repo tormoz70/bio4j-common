@@ -34,6 +34,9 @@ public class StringUtlTest {
 
 	@Test
 	public void split() {
+		//System.out.println(String.format("UPPER(%%%s%%)", "FIELD1"));
+		//System.out.println(String.format("UPPER(%s) LIKE UPPER('\u0025'||:%s||'\u0025')", "FIELD1", "test"));
+		//System.out.println(String.format("%s IS NULL", "fff1", "fff2"));
 		String[] strs = StringUtl.split("qwe,asd,zxc", ",");
 		Assert.assertEquals(strs[0], "qwe");
 		Assert.assertEquals(strs[1], "asd");

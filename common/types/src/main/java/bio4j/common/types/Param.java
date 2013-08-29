@@ -1,8 +1,11 @@
 package bio4j.common.types;
 
+import org.apache.commons.beanutils.BeanUtils;
+
 import bio4j.common.utils.StringUtl;
 
 public class Param implements Cloneable {
+
 	private Params owner;
 	private String name;
 
@@ -92,6 +95,10 @@ public class Param implements Cloneable {
 		return this.size;
 	}
 
+	public synchronized void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+	
 	public Direction getDirection() {
 		return this.direction;
 	}
@@ -111,4 +118,25 @@ public class Param implements Cloneable {
 		String valStr = this.getValue() + objsStr;
 		return String.format("(%s=[%s]; tp:%s; sz:%d; dr:%s)", this.getName(), valStr, this.getType(), this.getSize(), this.getDirection());
 	}
+
+	@Override
+    public Param clone() throws CloneNotSupportedException {
+		Param rslt = new Param(this.getOwner());
+		rslt.setName(this.getName());
+		try {
+			rslt.setValue(BeanUtils.cloneBean(this.getValue()));
+		} catch(Exception ex) {
+			rslt.setValue(this.getValue());
+		}
+		try {
+			rslt.setInnerObject(BeanUtils.cloneBean(this.getInnerObject()));
+		} catch(Exception ex) {
+			rslt.setInnerObject(this.getInnerObject());
+		}
+		rslt.setType(this.getType());
+		rslt.setSize(this.getSize());
+		rslt.setDirection(this.getDirection());
+	    return rslt;
+    }
+	
 }
