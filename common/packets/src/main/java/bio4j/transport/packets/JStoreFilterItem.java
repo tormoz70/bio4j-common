@@ -83,30 +83,31 @@ public class JStoreFilterItem implements Cloneable {
           ftype = this.getFieldType();
         else {
           if (this.getFieldValue() != null)
-            ftype = ftypeHelper.ConvertTypeToFType(this.FieldValue.GetType());
+            ftype = null; //ftypeHelper.ConvertTypeToFType(this.FieldValue.GetType());
         }
         return ftype;
     }
     
       public String buildSQLCondition(String sql, Params prms) {
-        if (prms == null)
-          throw new ArgumentNullException("prms");
-        var v_val_param_name = this.getFieldName() + "$afilter";
-        var v_ftype = this._detectFTypeGranted();
-        sql = String.Format(this.detectSQLFormat(this.Not, this.CmpOperator, v_ftype), this.FieldName, v_val_param_name);
-        var v_ptype = ftypeHelper.ConvertFTypeToType(v_ftype);
-        Object v_pval;
-        if (v_ftype == JSFieldType.Boolean) {
-          v_ptype = typeof(Int64);
-          var v_bool = (Boolean)this.FieldValue;
-          v_pval = (v_bool) ? 1 : 0;
-        }else
-          v_pval = this.FieldValue;
-        prms.Add(new Param { 
-          Name = v_val_param_name,
-          ParamType = v_ptype,
-          Value = v_pval
-        });
+//        if (prms == null)
+//          throw new ArgumentNullException("prms");
+//        var v_val_param_name = this.getFieldName() + "$afilter";
+//        var v_ftype = this._detectFTypeGranted();
+//        sql = String.Format(this.detectSQLFormat(this.Not, this.CmpOperator, v_ftype), this.FieldName, v_val_param_name);
+//        var v_ptype = ftypeHelper.ConvertFTypeToType(v_ftype);
+//        Object v_pval;
+//        if (v_ftype == JSFieldType.Boolean) {
+//          v_ptype = typeof(Int64);
+//          var v_bool = (Boolean)this.FieldValue;
+//          v_pval = (v_bool) ? 1 : 0;
+//        }else
+//          v_pval = this.FieldValue;
+//        prms.Add(new Param { 
+//          Name = v_val_param_name,
+//          ParamType = v_ptype,
+//          Value = v_pval
+//        });
+    	  return null;
       }
 	
 	

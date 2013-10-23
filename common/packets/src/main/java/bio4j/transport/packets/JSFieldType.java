@@ -35,27 +35,30 @@ public enum JSFieldType {
 	    return fromTypes;
     }
 	
-    public static String ConvertTypeToStr(Type type) {
+    public static String ConvertTypeToStr(Class<?> clazz) {
 
-        if (type != null) {
-          foreach (var fi in typeof(JSFieldType).GetFields()) {
-            var attr = enumHelper.GetAttributeByInfo<MappingAttribute>(fi);
-            if (attr != null) {
-              if (((attr.FromNetTypes != null) && attr.FromNetTypes.Any(t => t.Equals(type))) ||
-                  ((attr.FromNetTypes == null) && (attr.ToNetType.Equals(type))))
-                return attr.XmlName;
-            }
-          }
-        }
-        throw new ArgumentException("Невозможно преобразовать тип \"" + type + "\".", "type");
+//        if (type != null) {
+//          foreach (var fi in typeof(JSFieldType).GetFields()) {
+//            var attr = enumHelper.GetAttributeByInfo<MappingAttribute>(fi);
+//            if (attr != null) {
+//              if (((attr.FromNetTypes != null) && attr.FromNetTypes.Any(t => t.Equals(type))) ||
+//                  ((attr.FromNetTypes == null) && (attr.ToNetType.Equals(type))))
+//                return attr.XmlName;
+//            }
+//          }
+//        }
+//        throw new ArgumentException("Невозможно преобразовать тип \"" + type + "\".", "type");
+    	return null;
       }
 
-    public static JSFieldType ConvertTypeToFType(Type type) {
-        return ConvertStrToFieldType(ConvertTypeToStr(type));
-      }
+    public static JSFieldType ConvertTypeToFType(Class<?> clazz) {
+//        return ConvertStrToFieldType(ConvertTypeToStr(type));
+    	return null;
+    }
 
-    public static Type ConvertFTypeToType(JSFieldType type) {
-        return enumHelper.GetAttributeByValue<MappingAttribute>(type).ToNetType;
-      }
+    public static Class<?> ConvertFTypeToType(JSFieldType type) {
+//        return enumHelper.GetAttributeByValue<MappingAttribute>(type).ToNetType;
+    	return null;
+    }
     
 }
