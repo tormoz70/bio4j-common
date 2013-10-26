@@ -9,24 +9,31 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>${groupId}.common.types</artifactId>
-	<packaging>jar</packaging>
+	<packaging>bundle</packaging>
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <configuration>
-		            <instructions>
-		                <Embed-Dependency>commons-beanutils-core</Embed-Dependency>
-		            </instructions>
-	        	</configuration>
+	                <instructions>
+						<Import-Package>!org.apache.commons.logging,*</Import-Package>                
+	                    <Embed-Dependency>commons-beanutils-core</Embed-Dependency>
+	                </instructions>
+            	</configuration>
 	        </plugin>
         </plugins>
     </build>
 	<dependencies>
+		<!-- <dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		    <scope>compile</scope>
+		</dependency> -->
 	    <dependency>
 		    <groupId>commons-beanutils</groupId>
 		    <artifactId>commons-beanutils-core</artifactId>
+		    <scope>compile</scope>
 		</dependency>
 	    <dependency>
 			<groupId>${groupId}</groupId>

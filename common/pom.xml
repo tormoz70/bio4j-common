@@ -15,6 +15,7 @@
 					<extensions>true</extensions>
 					<configuration>
 						<supportedProjectTypes>
+						    <supportedProjectType>bundle</supportedProjectType>
 						    <supportedProjectType>jar</supportedProjectType>
 						</supportedProjectTypes>
 						<instructions>
@@ -36,7 +37,6 @@
 					<artifactId>maven-jar-plugin</artifactId>
 					<configuration>
 						<archive>
-							<!-- add bundle plugin generated manifest to the jar -->
 							<manifestFile>
 								${project.build.outputDirectory}/META-INF/MANIFEST.MF
 							</manifestFile>
@@ -68,7 +68,12 @@
 				<version>1.2.1</version>
 			</dependency>
 			
-			<dependency>
+			<!-- <dependency>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+				<version>1.1.1</version>
+			</dependency> -->
+            <dependency>
 			    <groupId>commons-beanutils</groupId>
 			    <artifactId>commons-beanutils-core</artifactId>
 			    <version>1.8.3</version>
