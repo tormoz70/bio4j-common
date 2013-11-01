@@ -54,30 +54,31 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	<properties>
+		<testng_version>6.7</testng_version>
+		<osgi_R4_version>1.0</osgi_R4_version>
+		<javax_servlet_version>3.0-Preview</javax_servlet_version>
+		<slf4j_version>1.7.5</slf4j_version>
+		<ojdbc6_version>11.2.0</ojdbc6_version>
+	</properties>
 	<dependencyManagement>
 		<dependencies>
 		    <dependency>
 	            <groupId>com.oracle</groupId>
 	            <artifactId>ojdbc6</artifactId>
-	            <version>11.2.0</version>
+	            <version>${ojdbc6_version}</version>
 	        </dependency>
-
+			<dependency>
+				<groupId>org.osgi</groupId>
+				<artifactId>osgi_R4_core</artifactId>
+				<version>${osgi_R4_version}</version>
+				<scope>provided</scope>
+			</dependency>
 			<dependency>
 				<groupId>${groupId}</groupId>
 				<artifactId>flexjson</artifactId>
 				<version>1.2.1</version>
 			</dependency>
-			<dependency>
-				<groupId>org.dom4j</groupId>
-				<artifactId>dom4j</artifactId>
-				<version>1.6.1</version>
-			</dependency>
-			
-			<!-- <dependency>
-				<groupId>commons-logging</groupId>
-				<artifactId>commons-logging</artifactId>
-				<version>1.1.1</version>
-			</dependency> -->
             <dependency>
 			    <groupId>commons-beanutils</groupId>
 			    <artifactId>commons-beanutils-core</artifactId>
@@ -108,14 +109,19 @@
 		<module>database-api</module>
 		<module>direct-oracle-access</module>
         <module>packets</module>
-        <module>dom4j-bundle</module>
 	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.7</version>
+			<version>${testng_version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j_version}</version>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>

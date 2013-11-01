@@ -12,4 +12,13 @@ public class UtlTest {
 //	  ArrayList<String> clss = getClassNamesFromPackage(""); 
 //	  Assert.
   }
+
+  @Test
+  public void findAnnotationTest() {	
+	  AnnotationTest annot = Utl.findAnnotation(AnnotationTest.class, AnnotetedClass.class);
+	  if(annot != null)
+		  Assert.assertEquals(annot.path(), "/test_path");
+	  else
+		  Assert.fail();
+  }
 }

@@ -19,6 +19,10 @@
         </plugins>
     </build>
 	<dependencies>
+	    <dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>osgi_R4_core</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>${groupId}</groupId>
 			<artifactId>flexjson</artifactId>

@@ -98,4 +98,5 @@ public class StringUtl {
 				return str1.equals(str2);
 		}
 	}
+	
 }
