@@ -16,7 +16,7 @@ public class Params extends ArrayList<Param> {
     private static final long serialVersionUID = 1L;
 	private static final String csDefaultDelimiter = "/";
 
-	public Param getParam(final String name, final Boolean ignoreCase, final Boolean createIfNotFound) {
+	public Param getParam(final String name, final Boolean ignoreCase) {
 		Param result = this.process(new DelegateCheck<Param>() {
 			@Override
 			public boolean callback(Param param) {
@@ -24,15 +24,7 @@ public class Params extends ArrayList<Param> {
 			}
 		}).first();
 		
-		if ((result == null) && (createIfNotFound)) {
-			result = new Param(this);
-			this.add(result);
-		}
 		return result;
-	}
-
-	public Param getParam(String name, Boolean ignoreCase) {
-		return getParam(name, ignoreCase, false);
 	}
 
 	public Param getParam(final String name) {
@@ -73,23 +65,24 @@ public class Params extends ArrayList<Param> {
 			return null;
 	}
 
-	public synchronized Param removeParam(Param param) {
-		if (param.getOwner() == this)
-			param.removeFromOwner();
-		return param;
-	}
+//	public synchronized Param removeParam(Param param) {
+//		if (param.getOwner() == this)
+//			param.remove();
+//		return param;
+//	}
 
-	public synchronized Param removeParam(String name) {
+	public synchronized Param remove(String name) {
 		Param rslt = this.getParam(name);
-		return this.removeParam(rslt);
+		this.remove(rslt);
+		return rslt;
 	}
 
-	private Boolean alredyExists(String name, Boolean replaceIfExists) {
+	private synchronized Boolean alredyExists(String name, Boolean replaceIfExists) {
 		Boolean result = false;
 		Param exists = this.getParam(name);
 		if (exists != null) {
 			if (replaceIfExists) {
-				exists.removeFromOwner();
+				this.remove(exists);
 				exists = null;
 			} else
 				result = true;
@@ -108,7 +101,7 @@ public class Params extends ArrayList<Param> {
 	public synchronized Param add(String name, Object value, Boolean replaceIfExists) {
 		if (!StringUtl.isNullOrEmpty(name)) {
 			if (!this.alredyExists(name, replaceIfExists)) {
-				Param rslt = new Param(this, name, value);
+				Param rslt = new ParamBuilder(name).setOwner(this).setValue(value).build();
 				super.add(rslt);
 				return rslt;
 			}
@@ -121,9 +114,7 @@ public class Params extends ArrayList<Param> {
 	}
 
 	public synchronized Param add(String name, Object value, Object innerObject) {
-		Param rslt = this.add(name, value, false);
-		rslt.setInnerObject(innerObject);
-		return rslt;
+		return new ParamBuilder(name).setValue(value).setInnerObject(innerObject).build();
 	}
 
 	public synchronized Params merge(Params params, Boolean overwrite) {
@@ -153,13 +144,6 @@ public class Params extends ArrayList<Param> {
 		if (param != null)
 			return param.getValue();
 		return null;
-	}
-
-	public synchronized Param setValue(String name, Object value) {
-		Param param = this.getParam(name);
-		if (param != null)
-			param.setValue(value);
-		return param;
 	}
 
 	public Map<String, String> toMap() {
@@ -236,7 +220,7 @@ public class Params extends ArrayList<Param> {
 		String[] strs = StringUtl.split(names, delimiter);
 		for (int i = 0; i < strs.length; i++)
 			if (i < values.length)
-				this.setValue(strs[i], values[i]);
+				this.add(new ParamBuilder(strs[i]).setValue(values[i]).build(), true);
 		return this;
 	}
 
@@ -251,7 +235,7 @@ public class Params extends ArrayList<Param> {
 	public synchronized Params removeList(String names, String delimiter) {
 		String[] strs = StringUtl.split(names, delimiter);
 		for (int i = 0; i < strs.length; i++)
-			this.removeParam(strs[i]);
+			this.remove(strs[i]);
 		return this;
 	}
 

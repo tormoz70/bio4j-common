@@ -6,34 +6,23 @@ import bio4j.common.utils.StringUtl;
 
 public class Param implements Cloneable {
 
-	private Params owner;
-	private String name;
+	private final Params owner;
+	private final String name;
 
-	private Object value;
-	private Object innerObject;
-	private Class<?> type;
-	private int size;
-	private Direction direction;
+	private final Object value;
+	private final Object innerObject;
+	private final Class<?> type;
+	private final  int size;
+	private final  Direction direction;
 
-	public Param(Params owner) {
-		this.owner = owner;
-	}
-
-	public Param(Params owner, String name, Object value) {
-		this(owner);
-		this.name = name;
-		this.value = value;
-	}
-
-	public Param(Params owner, String name, Object value, Class<?> type, Direction direction) {
-		this(owner, name, value);
-		this.type = type;
-		this.direction = direction;
-	}
-
-	public Param(Params owner, String name, Object value, Class<?> type, int size, Direction direction) {
-		this(owner, name, value, type, direction);
-		this.size = size;
+	public Param(ParamBuilder builder) {
+		this.name = builder.getName();
+		this.owner = builder.getOwner();
+		this.value = builder.getValue();
+		this.innerObject = builder.getInnerObject();
+		this.type = builder.getType();
+		this.size = builder.getSize();
+		this.direction = builder.getDirection();
 	}
 
 	public Params getOwner() {
@@ -41,26 +30,11 @@ public class Param implements Cloneable {
 	}
 
 	protected Param export(Params destOwner) {
-		Param rslt = null;
-		try {
-			rslt = (Param) this.clone();
-		} catch (CloneNotSupportedException e) {
-			return null;
-		}
-		rslt.owner = destOwner;
-		return rslt;
-	}
-
-	public synchronized void setName(String name) {
-		this.name = name;
+		return ParamBuilder.copy(this).setOwner(destOwner).build();
 	}
 
 	public String getName() {
 		return this.name;
-	}
-
-	public synchronized void setValue(Object value) {
-		this.value = value;
 	}
 
 	public Object getValue() {
@@ -71,43 +45,28 @@ public class Param implements Cloneable {
 		return (this.value == null) ? null : this.value.toString();
 	}
 
-	public synchronized void setInnerObject(Object innerObject) {
-		this.innerObject = innerObject;
-	}
-
 	public Object getInnerObject() {
 		return this.innerObject;
-	}
-
-	public synchronized void setType(Class<?> type) {
-		this.type = type;
 	}
 
 	public Class<?> getType() {
 		return this.type;
 	}
 
-	public synchronized void setSize(int size) {
-		this.size = size;
-	}
-
 	public int getSize() {
 		return this.size;
 	}
 
-	public synchronized void setDirection(Direction direction) {
-		this.direction = direction;
-	}
-	
 	public Direction getDirection() {
 		return this.direction;
 	}
 
-	public synchronized void removeFromOwner() {
-		if (this.getOwner() != null)
-			this.getOwner().remove(this);
-	}
-
+//	public synchronized void remove() {
+//		if (this.getOwner() != null) {
+//			this.getOwner().remove(this);
+//		}
+//	}
+//
 	public String toString() {
 		String innrObjStr = (this.getInnerObject() == null) ? null : "o:" + this.getInnerObject().toString();
 		String objsStr = null;
@@ -121,22 +80,18 @@ public class Param implements Cloneable {
 
 	@Override
     public Param clone() throws CloneNotSupportedException {
-		Param rslt = new Param(this.getOwner());
-		rslt.setName(this.getName());
+		ParamBuilder builder = ParamBuilder.copy(this);
 		try {
-			rslt.setValue(BeanUtils.cloneBean(this.getValue()));
+			builder.setValue(BeanUtils.cloneBean(this.getValue()));
 		} catch(Exception ex) {
-			rslt.setValue(this.getValue());
+			builder.setValue(this.getValue());
 		}
 		try {
-			rslt.setInnerObject(BeanUtils.cloneBean(this.getInnerObject()));
+			builder.setInnerObject(BeanUtils.cloneBean(this.getInnerObject()));
 		} catch(Exception ex) {
-			rslt.setInnerObject(this.getInnerObject());
+			builder.setInnerObject(this.getInnerObject());
 		}
-		rslt.setType(this.getType());
-		rslt.setSize(this.getSize());
-		rslt.setDirection(this.getDirection());
-	    return rslt;
+	    return builder.build();
     }
 	
 }
